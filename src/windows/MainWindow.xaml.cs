@@ -18,6 +18,9 @@ namespace SnapCaption
             InitializeComponent();
             ApplicationThemeManager.ApplySystemTheme();
 
+            // Set window title with version
+            this.Title = "SnapCaption - v1.1.0";
+
             Loaded += (s, e) =>
             {
                 SystemThemeWatcher.Watch(this, WindowBackdropType.Mica, true);
@@ -42,7 +45,6 @@ namespace SnapCaption
             ToggleTopmost(Translator.Setting.MainWindow.Topmost);
             UpdateOriginalCaptionButton(Translator.Setting.MainWindow.OriginalCaptionVisible);
             UpdateNativeCaptionsButton(Translator.Setting.MainWindow.NativeCaptionsVisible);
-            UpdateHistoryLockButton(Translator.Setting.MainWindow.HistorySelectable);
         }
 
         private void TopmostButton_Click(object sender, RoutedEventArgs e)
@@ -92,19 +94,72 @@ namespace SnapCaption
                 LiveCaptionsHandler.HideLiveCaptions(Translator.Window);
         }
 
-        private void HistoryLockButton_Click(object sender, RoutedEventArgs e)
+        private void CopyHistoryButton_Click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            var symbolIcon = button?.Icon as SymbolIcon;
+            // Copy all history to clipboard
+            if (!string.IsNullOrEmpty(Translator.Caption?.AccumulatedHistory))
+            {
+                try
+                {
+                    Clipboard.SetText(Translator.Caption.AccumulatedHistory);
+                    ShowSnackbar("Success", "History copied to clipboard");
+                }
+                catch (Exception ex)
+                {
+                    ShowSnackbar("Error", $"Failed to copy history: {ex.Message}", isError: true);
+                }
+            }
+            else
+            {
+                ShowSnackbar("Info", "No history to copy");
+            }
+        }
 
-            Translator.Setting.MainWindow.HistorySelectable = !Translator.Setting.MainWindow.HistorySelectable;
-            symbolIcon.Filled = !Translator.Setting.MainWindow.HistorySelectable;
+        private void SaveHistoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Save history to file
+            if (string.IsNullOrEmpty(Translator.Caption?.AccumulatedHistory))
+            {
+                ShowSnackbar("Info", "No history to save");
+                return;
+            }
 
-            CaptionPage.Instance?.UpdateHistoryCursorAndSelection(Translator.Setting.MainWindow.HistorySelectable);
+            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*",
+                FileName = $"SnapCaption-{DateTime.Now:yyyyMMddHHmmss}.txt",
+                DefaultExt = ".txt"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    System.IO.File.WriteAllText(saveFileDialog.FileName, Translator.Caption.AccumulatedHistory);
+                    ShowSnackbar("Success", $"History saved to {System.IO.Path.GetFileName(saveFileDialog.FileName)}");
+                }
+                catch (Exception ex)
+                {
+                    ShowSnackbar("Error", $"Failed to save history: {ex.Message}", isError: true);
+                }
+            }
         }
 
         private void ClearHistoryButton_Click(object sender, RoutedEventArgs e)
         {
+            // Copy history to clipboard before clearing
+            if (!string.IsNullOrEmpty(Translator.Caption?.AccumulatedHistory))
+            {
+                try
+                {
+                    Clipboard.SetText(Translator.Caption.AccumulatedHistory);
+                }
+                catch
+                {
+                    // Ignore clipboard errors when clearing
+                }
+            }
+
             // Clear all captions and history
             Translator.ClearAllCaptions();
         }
@@ -176,14 +231,6 @@ namespace SnapCaption
             if (NativeCaptionsButton.Icon is SymbolIcon icon)
             {
                 icon.Filled = isVisible;
-            }
-        }
-
-        private void UpdateHistoryLockButton(bool isSelectable)
-        {
-            if (HistoryLockButton.Icon is SymbolIcon icon)
-            {
-                icon.Filled = !isSelectable;
             }
         }
 

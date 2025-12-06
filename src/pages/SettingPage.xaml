@@ -18,7 +18,23 @@
 
         <!-- Left Column: Settings in vertical layout -->
         <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,20,0">
-            
+
+            <!-- Translate Toggle -->
+            <StackPanel Margin="0,0,0,15" Orientation="Vertical">
+                <TextBlock Margin="0,0,0,5" Text="Translate" />
+                <ui:ToggleSwitch
+                    x:Name="TranslateToggle"
+                    Width="100"
+                    Height="30"
+                    HorizontalAlignment="Left"
+                    Padding="10,4,10,7"
+                    IsChecked="{Binding TranslateEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Checked="TranslateToggle_Changed"
+                    Unchecked="TranslateToggle_Changed"
+                    OffContent="Off"
+                    OnContent="On" />
+            </StackPanel>
+
             <!-- Target Language -->
             <StackPanel Margin="0,0,0,15" Orientation="Vertical">
                 <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
@@ -57,6 +73,7 @@
                     Padding="10,4,10,7"
                     FontSize="13.3"
                     IsEditable="True"
+                    IsEnabled="{Binding TranslateEnabled, Mode=OneWay}"
                     LostFocus="TargetLangBox_LostFocus"
                     SelectionChanged="TargetLangBox_SelectionChanged" />
             </StackPanel>
@@ -91,6 +108,7 @@
                     HorizontalAlignment="Left"
                     Padding="10,4,10,7"
                     FontSize="13.3"
+                    IsEnabled="{Binding TranslateEnabled, Mode=OneWay}"
                     SelectedItem="{Binding ApiName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionChanged="TranslateAPIBox_SelectionChanged" />
             </StackPanel>
@@ -122,11 +140,13 @@
                     </Button>
                 </StackPanel>
                 <Slider
+                    x:Name="APIIntervalSlider"
                     Width="150"
                     HorizontalAlignment="Left"
                     AutoToolTipPlacement="TopLeft"
                     AutoToolTipPrecision="0"
                     Maximum="10"
+                    IsEnabled="{Binding TranslateEnabled, Mode=OneWay}"
                     Value="{Binding MaxSyncInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
@@ -169,7 +189,7 @@
                 FontSize="14"
                 TextAlignment="Center"
                 Margin="0,0,0,15"
-                Text="v1.0.0" />
+                Text="v1.1.0" />
 
             <!-- Repository Link -->
             <TextBlock Margin="0,0,0,0" TextAlignment="Center">

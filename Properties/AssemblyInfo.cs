@@ -8,5 +8,5 @@ using System.Reflection;
 
 
 [assembly: AssemblyTitle("SnapCaption")]
-[assembly: AssemblyVersion("1.6.1254.2719")]
-[assembly: AssemblyFileVersion("1.6.1254.2719")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]

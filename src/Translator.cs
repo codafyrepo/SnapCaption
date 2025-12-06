@@ -191,7 +191,14 @@ namespace SnapCaption
                 {
                     var originalSnapshot = pendingTextQueue.Dequeue();
 
-                    if (LogOnlyFlag)
+                    if (!Setting.TranslateEnabled)
+                    {
+                        // When translation is disabled, pass through the original text without calling API
+                        translationTaskQueue.Enqueue(token => Task.FromResult(
+                            (originalSnapshot, Array.IndexOf(TextUtil.PUNC_EOS, originalSnapshot[^1]) != -1)
+                        ), originalSnapshot);
+                    }
+                    else if (LogOnlyFlag)
                     {
                         bool isOverwrite = await IsOverwrite(originalSnapshot);
                         await LogOnly(originalSnapshot, isOverwrite);
@@ -267,7 +274,16 @@ namespace SnapCaption
             bool isOverwrite = false, CancellationToken token = default)
         {
             string targetLanguage, apiName;
-            if (Setting != null)
+
+            // Check if in passthrough mode (translation disabled, original = translated)
+            bool isPassthrough = !Setting.TranslateEnabled && originalText == translatedText;
+
+            if (isPassthrough)
+            {
+                targetLanguage = "N/A";
+                apiName = "Passthrough";
+            }
+            else if (Setting != null)
             {
                 targetLanguage = Setting.TargetLanguage;
                 apiName = Setting.ApiName;
@@ -303,6 +319,26 @@ namespace SnapCaption
                 if (isOverwrite)
                     await SQLiteHistoryLogger.DeleteLastTranslation(token);
                 await SQLiteHistoryLogger.LogTranslation(originalText, "N/A", "N/A", "LogOnly");
+                TranslationLogged?.Invoke();
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Logging History Failed: {ex.Message}");
+            }
+        }
+
+        public static async Task LogPassthrough(string originalText,
+            bool isOverwrite = false, CancellationToken token = default)
+        {
+            try
+            {
+                if (isOverwrite)
+                    await SQLiteHistoryLogger.DeleteLastTranslation(token);
+                await SQLiteHistoryLogger.LogTranslation(originalText, originalText, "N/A", "Passthrough");
                 TranslationLogged?.Invoke();
             }
             catch (OperationCanceledException)

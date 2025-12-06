@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:SnapCaption"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    Title="SnapCaption"
+    Title="SnapCaption - v1.1.0"
     Width="900"
     Height="590"
     MinWidth="900"
@@ -35,7 +35,10 @@
                 Height="27"
                 ShowMaximize="False">
                 <ui:TitleBar.Header>
-                    <ui:TextBlock Padding="15,0,0,0" VerticalAlignment="Center">SnapCaption</ui:TextBlock>
+                    <ui:TextBlock
+                        Padding="15,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type ui:FluentWindow}}}" />
                 </ui:TitleBar.Header>
                 <ui:TitleBar.TrailingContent>
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
@@ -56,13 +59,21 @@
                                                  Filled=True}"
                             ToolTip="Show/Hide Original Caption" />
                         <ui:Button
-                            x:Name="HistoryLockButton"
+                            x:Name="SaveHistoryButton"
                             Margin="0,0,5,0"
                             Appearance="Transparent"
-                            Click="HistoryLockButton_Click"
-                            Icon="{ui:SymbolIcon LockClosed24,
+                            Click="SaveHistoryButton_Click"
+                            Icon="{ui:SymbolIcon Save24,
                                                  Filled=False}"
-                            ToolTip="Lock History (Click to Copy All)" />
+                            ToolTip="Save History to File" />
+                        <ui:Button
+                            x:Name="CopyHistoryButton"
+                            Margin="0,0,5,0"
+                            Appearance="Transparent"
+                            Click="CopyHistoryButton_Click"
+                            Icon="{ui:SymbolIcon Copy24,
+                                                 Filled=False}"
+                            ToolTip="Copy History to Clipboard" />
                         <ui:Button
                             x:Name="ClearHistoryButton"
                             Margin="0,0,5,0"

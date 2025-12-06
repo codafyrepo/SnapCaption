@@ -76,6 +76,12 @@ namespace SnapCaption
             TargetLangInfoFlyout.Hide();
         }
 
+        private void TranslateToggle_Changed(object sender, RoutedEventArgs e)
+        {
+            // The IsEnabled bindings on the controls will automatically handle enable/disable
+            // based on the TranslateEnabled property
+        }
+
         public void LoadAPISetting()
         {
             var configType = Translator.Setting[Translator.Setting.ApiName].GetType();

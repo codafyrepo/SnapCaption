@@ -18,6 +18,7 @@ namespace SnapCaption.models
         private int maxIdleInterval = 50;
         private int maxSyncInterval = 3;
 
+        private bool translateEnabled = true;
         private string apiName;
         private string targetLanguage;
         private string prompt;
@@ -38,6 +39,16 @@ namespace SnapCaption.models
             {
                 maxSyncInterval = value;
                 OnPropertyChanged("MaxSyncInterval");
+            }
+        }
+
+        public bool TranslateEnabled
+        {
+            get => translateEnabled;
+            set
+            {
+                translateEnabled = value;
+                OnPropertyChanged("TranslateEnabled");
             }
         }
 

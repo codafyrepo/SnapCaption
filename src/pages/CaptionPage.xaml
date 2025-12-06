@@ -24,14 +24,11 @@
             <TextBlock
                 x:Name="OriginalCaption"
                 Background="Transparent"
-                Cursor="Hand"
                 FontSize="18"
                 TextWrapping="Wrap"
                 TextAlignment="Left"
                 VerticalAlignment="Center"
-                MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"
                 Text="{Binding DisplayOriginalCaption, UpdateSourceTrigger=PropertyChanged}"
-                ToolTip="Click To Copy"
                 MaxHeight="65"
                 LineHeight="30"
                 LineStackingStrategy="BlockLineHeight" />
@@ -54,13 +51,42 @@
                 VerticalScrollBarVisibility="Auto"
                 HorizontalScrollBarVisibility="Disabled"
                 IsReadOnly="True"
+                Focusable="False"
                 BorderThickness="0"
                 Background="Transparent"
                 FontSize="18"
                 Padding="4"
                 VerticalContentAlignment="Bottom"
                 AcceptsReturn="True"
-                Cursor="IBeam" />
+                Cursor="Arrow">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="OverridesDefaultStyle" Value="True" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <ScrollViewer
+                                        x:Name="PART_ContentHost"
+                                        Background="{TemplateBinding Background}" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
         </ui:Card>
 
         <ui:Card
@@ -72,14 +98,11 @@
             <TextBlock
                 x:Name="TranslatedCaption"
                 Background="Transparent"
-                Cursor="Hand"
                 FontSize="18"
                 TextWrapping="Wrap"
                 TextAlignment="Left"
                 VerticalAlignment="Center"
-                MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"
                 Text="{Binding DisplayTranslatedCaption, UpdateSourceTrigger=PropertyChanged}"
-                ToolTip="Click To Copy"
                 MaxHeight="65"
                 LineHeight="30"
                 LineStackingStrategy="BlockLineHeight" />

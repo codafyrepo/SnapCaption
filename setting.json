@@ -12,11 +12,11 @@
     "CaptionLogMax": 2,
     "DebugMode": false,
     "OriginalCaptionVisible": false,
-    "NativeCaptionsVisible": true,
+    "NativeCaptionsVisible": false,
     "HistorySelectable": false
   },
   "WindowBounds": {
-    "MainWindow": "1408,119,900,590",
+    "MainWindow": "315,137,900,590",
     "OverlayWindow": "955, 765, 650, 135"
   },
   "Configs": {

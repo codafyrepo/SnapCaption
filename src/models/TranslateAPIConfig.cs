@@ -15,15 +15,15 @@ namespace SnapCaption.models
         [JsonIgnore]
         public static Dictionary<string, string> SupportedLanguages => new()
         {
+            { "pt-BR", "pt-BR" },
+            { "es-ES", "es-ES" },
+            { "fr-FR", "fr-FR" },
+            { "it-IT", "it-IT" },
+            { "de-DE", "de-DE" },
             { "zh-CN", "zh-CN" },
             { "zh-TW", "zh-TW" },
-            { "en-US", "en-US" },
-            { "en-GB", "en-GB" },
             { "ja-JP", "ja-JP" },
             { "ko-KR", "ko-KR" },
-            { "fr-FR", "fr-FR" },
-            { "es-ES", "es-ES" },
-            { "pt-BR", "pt-BR" },
             { "th-TH", "th-TH" },
         };
 
@@ -166,15 +166,15 @@ namespace SnapCaption.models
         [JsonIgnore]
         public new static Dictionary<string, string> SupportedLanguages => new()
         {
+            { "pt-BR", "PT-BR" },
+            { "es-ES", "ES" },
+            { "fr-FR", "FR" },
+            { "it-IT", "IT" },
+            { "de-DE", "DE" },
             { "zh-CN", "ZH-HANS" },
             { "zh-TW", "ZH-HANT" },
-            { "en-US", "EN-US" },
-            { "en-GB", "EN-GB" },
             { "ja-JP", "JA" },
             { "ko-KR", "KO" },
-            { "fr-FR", "FR" },
-            { "es-ES", "ES" },
-            { "pt-BR", "PT-BR" },
             { "th-TH", "TH" },
         };
 
@@ -215,15 +215,15 @@ namespace SnapCaption.models
         [JsonIgnore]
         public new static Dictionary<string, string> SupportedLanguages => new()
         {
+            { "pt-BR", "pt" },
+            { "es-ES", "es" },
+            { "fr-FR", "fr" },
+            { "it-IT", "it" },
+            { "de-DE", "de" },
             { "zh-CN", "zh-CHS" },
             { "zh-TW", "zh-CHT" },
-            { "en-US", "en" },
-            { "en-GB", "en" },
             { "ja-JP", "ja" },
             { "ko-KR", "ko" },
-            { "fr-FR", "fr" },
-            { "es-ES", "es" },
-            { "pt-BR", "pt" },
             { "th-TH", "th" },
         };
 
@@ -267,15 +267,15 @@ namespace SnapCaption.models
         [JsonIgnore]
         public new static Dictionary<string, string> SupportedLanguages => new()
         {
+            { "pt-BR", "pt" },
+            { "es-ES", "es" },
+            { "fr-FR", "fr" },
+            { "it-IT", "it" },
+            { "de-DE", "de" },
             { "zh-CN", "zh" },
             { "zh-TW", "zh" },
-            { "en-US", "en" },
-            { "en-GB", "en" },
             { "ja-JP", "ja" },
             { "ko-KR", "ko" },
-            { "fr-FR", "fr" },
-            { "es-ES", "es" },
-            { "pt-BR", "pt" },
             { "th-TH", "th" },
         };
 
@@ -337,15 +337,15 @@ namespace SnapCaption.models
         [JsonIgnore]
         public new static Dictionary<string, string> SupportedLanguages => new()
         {
+            { "pt-BR", "pt" },
+            { "es-ES", "spa" },
+            { "fr-FR", "fra" },
+            { "it-IT", "it" },
+            { "de-DE", "de" },
             { "zh-CN", "zh" },
             { "zh-TW", "cht" },
-            { "en-US", "en" },
-            { "en-GB", "en" },
             { "ja-JP", "jp" },
             { "ko-KR", "kor" },
-            { "fr-FR", "fra" },
-            { "es-ES", "spa" },
-            { "pt-BR", "pt" },
             { "th-TH", "th" },
         };
 
@@ -389,15 +389,15 @@ namespace SnapCaption.models
         [JsonIgnore]
         public new static Dictionary<string, string> SupportedLanguages => new()
         {
+            { "pt-BR", "pt" },
+            { "es-ES", "es" },
+            { "fr-FR", "fr" },
+            { "it-IT", "it" },
+            { "de-DE", "de" },
             { "zh-CN", "zh" },
             { "zh-TW", "zh" },
-            { "en-US", "en" },
-            { "en-GB", "en" },
             { "ja-JP", "ja" },
             { "ko-KR", "ko" },
-            { "fr-FR", "fr" },
-            { "es-ES", "es" },
-            { "pt-BR", "pt" },
             { "th-TH", "th" },
         };
 

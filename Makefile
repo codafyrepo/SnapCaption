@@ -4,6 +4,8 @@
 # Variables
 PROJECT = SnapCaption.csproj
 SOLUTION = SnapCaption.sln
+APP_NAME = SnapCaption
+VERSION = v1.1.0
 CONFIGURATION = Release
 CONFIGURATION_DEBUG = Debug
 RUNTIME_X64 = win-x64
@@ -16,7 +18,7 @@ PUBLISH_DIR = publish
 DOTNET = dotnet
 
 # Phony targets
-.PHONY: all build build-debug clean restore run publish publish-x64 publish-arm64 publish-all release release-single dist help
+.PHONY: all build build-debug clean restore run publish publish-x64 publish-arm64 publish-all release release-single dist deploy deploy-x64 deploy-arm64 help
 
 # Default target
 all: build
@@ -128,6 +130,36 @@ dist: release-single
 	@echo "  - LICENSE"
 	@echo ""
 	@echo "Ready to distribute! Users can run SnapCaption.exe directly."
+
+# Deploy single-file executables with versioned filenames
+deploy: deploy-x64 deploy-arm64
+	@echo "Deploy targets completed."
+
+deploy-x64:
+	@echo "Building deployable single-file for $(RUNTIME_X64)..."
+	$(DOTNET) publish $(PROJECT) -c $(CONFIGURATION) -r $(RUNTIME_X64) --self-contained true \
+		-p:PublishSingleFile=true \
+		-p:PublishTrimmed=false \
+		-p:IncludeNativeLibrariesForSelfExtract=true \
+		-p:DebugType=None \
+		-p:DebugSymbols=false \
+		-o $(PUBLISH_DIR)/deploy/$(RUNTIME_X64)
+	@mv $(PUBLISH_DIR)/deploy/$(RUNTIME_X64)/SnapCaption.exe \
+		$(PUBLISH_DIR)/deploy/$(RUNTIME_X64)/$(APP_NAME)-$(VERSION)-$(RUNTIME_X64).exe
+	@echo "Deployed: $(PUBLISH_DIR)/deploy/$(RUNTIME_X64)/$(APP_NAME)-$(VERSION)-$(RUNTIME_X64).exe"
+
+deploy-arm64:
+	@echo "Building deployable single-file for $(RUNTIME_ARM64)..."
+	$(DOTNET) publish $(PROJECT) -c $(CONFIGURATION) -r $(RUNTIME_ARM64) --self-contained true \
+		-p:PublishSingleFile=true \
+		-p:PublishTrimmed=false \
+		-p:IncludeNativeLibrariesForSelfExtract=true \
+		-p:DebugType=None \
+		-p:DebugSymbols=false \
+		-o $(PUBLISH_DIR)/deploy/$(RUNTIME_ARM64)
+	@mv $(PUBLISH_DIR)/deploy/$(RUNTIME_ARM64)/SnapCaption.exe \
+		$(PUBLISH_DIR)/deploy/$(RUNTIME_ARM64)/$(APP_NAME)-$(VERSION)-$(RUNTIME_ARM64).exe
+	@echo "Deployed: $(PUBLISH_DIR)/deploy/$(RUNTIME_ARM64)/$(APP_NAME)-$(VERSION)-$(RUNTIME_ARM64).exe"
 
 # Help target
 help:

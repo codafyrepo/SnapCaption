@@ -61,11 +61,13 @@ namespace SnapCaption
             {
                 Translator.LogOnlyFlag = false;
                 symbolIcon.Filled = false;
+                ShowSnackbar("Resumed", "Translation resumed");
             }
             else
             {
                 Translator.LogOnlyFlag = true;
                 symbolIcon.Filled = true;
+                ShowSnackbar("Paused", "Translation paused");
             }
         }
 
@@ -96,22 +98,41 @@ namespace SnapCaption
 
         private void CopyHistoryButton_Click(object sender, RoutedEventArgs e)
         {
-            // Copy all history to clipboard
-            if (!string.IsNullOrEmpty(Translator.Caption?.AccumulatedHistory))
+            CopyHistory();
+        }
+
+        public void CopyHistory()
+        {
+            CopyCaption(Translator.Caption?.AccumulatedHistory, "History");
+        }
+
+        public void CopyOriginalCaption()
+        {
+            CopyCaption(Translator.Caption?.DisplayOriginalCaption, "Original caption");
+        }
+
+        public void CopyTranslatedCaption()
+        {
+            CopyCaption(Translator.Caption?.DisplayTranslatedCaption, "Translated caption");
+        }
+
+        private void CopyCaption(string? content, string label)
+        {
+            if (!string.IsNullOrEmpty(content))
             {
                 try
                 {
-                    Clipboard.SetText(Translator.Caption.AccumulatedHistory);
-                    ShowSnackbar("Success", "History copied to clipboard");
+                    Clipboard.SetText(content);
+                    ShowSnackbar("Success", $"{label} copied to clipboard");
                 }
                 catch (Exception ex)
                 {
-                    ShowSnackbar("Error", $"Failed to copy history: {ex.Message}", isError: true);
+                    ShowSnackbar("Error", $"Failed to copy {label.ToLower()}: {ex.Message}", isError: true);
                 }
             }
             else
             {
-                ShowSnackbar("Info", "No history to copy");
+                ShowSnackbar("Info", $"No {label.ToLower()} to copy");
             }
         }
 
@@ -162,6 +183,7 @@ namespace SnapCaption
 
             // Clear all captions and history
             Translator.ClearAllCaptions();
+            ShowSnackbar("Cleared", "History cleared (copied to clipboard for safety)");
         }
 
         private void MainWindow_LocationChanged(object sender, EventArgs e)
@@ -213,7 +235,7 @@ namespace SnapCaption
                 Title = title,
                 Content = message,
                 Appearance = isError ? ControlAppearance.Danger : ControlAppearance.Light,
-                Timeout = TimeSpan.FromSeconds(5)
+                Timeout = TimeSpan.FromSeconds(2)
             };
             snackbar.Show();
         }

@@ -223,7 +223,7 @@ namespace SnapCaption
                 if (LogOnlyFlag)
                 {
                     Caption.TranslatedCaption = string.Empty;
-                    Caption.DisplayTranslatedCaption = "[Paused]";
+                    Caption.DisplayTranslatedCaption = string.Empty;
                 }
                 else if (!string.IsNullOrEmpty(RegexPatterns.NoticePrefix().Replace(
                              translatedText, string.Empty).Trim()) &&
@@ -280,7 +280,7 @@ namespace SnapCaption
 
             if (isPassthrough)
             {
-                targetLanguage = "N/A";
+                targetLanguage = string.Empty;
                 apiName = "Passthrough";
             }
             else if (Setting != null)
@@ -290,8 +290,8 @@ namespace SnapCaption
             }
             else
             {
-                targetLanguage = "N/A";
-                apiName = "N/A";
+                targetLanguage = string.Empty;
+                apiName = string.Empty;
             }
 
             try
@@ -318,7 +318,7 @@ namespace SnapCaption
             {
                 if (isOverwrite)
                     await SQLiteHistoryLogger.DeleteLastTranslation(token);
-                await SQLiteHistoryLogger.LogTranslation(originalText, "N/A", "N/A", "LogOnly");
+                await SQLiteHistoryLogger.LogTranslation(originalText, string.Empty, string.Empty, "LogOnly");
                 TranslationLogged?.Invoke();
             }
             catch (OperationCanceledException)
@@ -338,7 +338,7 @@ namespace SnapCaption
             {
                 if (isOverwrite)
                     await SQLiteHistoryLogger.DeleteLastTranslation(token);
-                await SQLiteHistoryLogger.LogTranslation(originalText, originalText, "N/A", "Passthrough");
+                await SQLiteHistoryLogger.LogTranslation(originalText, originalText, string.Empty, "Passthrough");
                 TranslationLogged?.Invoke();
             }
             catch (OperationCanceledException)

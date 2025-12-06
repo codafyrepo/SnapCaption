@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -46,9 +45,6 @@ namespace SnapCaption
                 UpdateOriginalCaptionVisibility(Translator.Setting.MainWindow.OriginalCaptionVisible);
                 UpdateHistoryCursorAndSelection(Translator.Setting.MainWindow.HistorySelectable);
             }
-
-            // Always attach copy handler to history
-            HistoryTextBox.MouseLeftButtonDown += HistoryTextBox_CopyAll;
         }
 
         // Destructor or Unloaded to unsubscribe
@@ -61,24 +57,6 @@ namespace SnapCaption
                 Translator.Setting.MainWindow.PropertyChanged -= MainWindow_PropertyChanged;
                 Translator.Setting.MainWindow.PropertyChanged -= MainWindow_HistorySelectableChanged;
              }
-        }
-
-        private async void TextBlock_MouseLeftButtonDown(object sender, RoutedEventArgs e)
-        {
-            if (sender is TextBlock textBlock)
-            {
-                try
-                {
-                    Clipboard.SetText(textBlock.Text);
-                    textBlock.ToolTip = "Copied!";
-                }
-                catch
-                {
-                    textBlock.ToolTip = "Error to Copy";
-                }
-                await Task.Delay(500);
-                textBlock.ToolTip = "Click to Copy";
-            }
         }
 
         private void TranslatedChanged(object sender, PropertyChangedEventArgs e)
@@ -137,42 +115,12 @@ namespace SnapCaption
             }
         }
 
-        private async void HistoryTextBox_CopyAll(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(HistoryTextBox.Text))
-            {
-                try
-                {
-                    Clipboard.SetText(HistoryTextBox.Text);
-                    var originalToolTip = HistoryTextBox.ToolTip;
-                    HistoryTextBox.ToolTip = "Copied!";
-                    await Task.Delay(1000);
-                    HistoryTextBox.ToolTip = originalToolTip;
-                }
-                catch
-                {
-                    var originalToolTip = HistoryTextBox.ToolTip;
-                    HistoryTextBox.ToolTip = "Error to Copy";
-                    await Task.Delay(1000);
-                    HistoryTextBox.ToolTip = originalToolTip;
-                }
-            }
-        }
-
         public void UpdateHistoryCursorAndSelection(bool isSelectable)
         {
-            if (isSelectable)
-            {
-                // Unlocked: Allow text selection, show IBeam cursor
-                HistoryTextBox.Cursor = System.Windows.Input.Cursors.IBeam;
-                HistoryTextBox.ToolTip = "Select text to copy";
-            }
-            else
-            {
-                // Locked: Copy all on click, show Hand cursor
-                HistoryTextBox.Cursor = System.Windows.Input.Cursors.Hand;
-                HistoryTextBox.ToolTip = "Click to Copy All";
-            }
+            // Always show default arrow cursor and no tooltip; disable focus to avoid selection
+            HistoryTextBox.Cursor = System.Windows.Input.Cursors.Arrow;
+            HistoryTextBox.ToolTip = null;
+            HistoryTextBox.Focusable = false;
         }
     }
 }
